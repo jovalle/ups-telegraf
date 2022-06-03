@@ -2,6 +2,8 @@
 
 Collect, parse and push data from USB attached UPS device with Telegraf and Python to InfluxDB and Grafana 
 
+![Screenshot 2022-06-02 224354](https://user-images.githubusercontent.com/47045210/171776476-ae864f80-ef55-44fe-975a-37d22ade8d36.png)
+
 Transforms `upsc` output like this:
 ```
 battery.charge: 100
