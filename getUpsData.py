@@ -17,7 +17,7 @@ def main(config, name):
             string_measurements = f.read().splitlines()
 
         # create the commande
-        cmd= f"upsc {name} /dev/stdout 2> /dev/null"
+        cmd=f"upsc {name} 2>/dev/null"
 
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
         output=""
@@ -42,3 +42,4 @@ def main(config, name):
 
 if __name__ == '__main__':
     main()
+
