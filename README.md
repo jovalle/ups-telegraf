@@ -1,4 +1,5 @@
-# Description
+# ups-telegraf
+
 Collect, parse and push data from USB attached UPS device with Telegraf and Python to InfluxDB and Grafana 
 
 Transforms `upsc` output like this:
@@ -31,6 +32,7 @@ cd /opt
 git clone https://github.com/jovalle/ups-telegraf.git
 cd /opt/ups-telegraf
 ```
+
 install python dependencies
 ```
 pip install -r requirements.txt
@@ -44,7 +46,7 @@ upsc $(upsc -l 2>/dev/null | tail -n 1) 2>/dev/null | awk -F ":" '{ $2 = "" ; pr
 update the telegraf configuration (default: `/etc/telegraf/telegraf.conf`) with the new input:
 ```
 [[inputs.exec]]
-   commands = ["python /opt/ups-telegraf/getUpsData.py --config tripplite/smart1500lcd --name tripplite"]
+   commands = ["python /opt/ups-telegraf/get_ups_data.py --config tripplite/smart1500lcd --name tripplite"]
    timeout = "5s"
    data_format = "influx"
 ```
