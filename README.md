@@ -1,5 +1,5 @@
 # Description
-Get data from USB-connected UPS into InfluxDB using Telegraf
+Collect, parse and push data from USB attached UPS device with Telegraf and Python to InfluxDB and Grafana 
 
 Transforms `upsc` output like this:
 ```
@@ -20,44 +20,45 @@ ups battery.charge=100,battery.charge.low=10,battery.charge.warning=20,battery.m
 
 ## Usage
 
+install telegraf
+```
+sudo apt install -y telegraf
+```
+
 clone the repo via 
 ```
-git clone https://github.com/sa7mon/ups-telegraf.git
+cd /opt
+git clone https://github.com/jovalle/ups-telegraf.git
+cd /opt/ups-telegraf
 ```
-install dependency
+install python dependencies
 ```
 pip install -r requirements.txt
 ```
 
-see all UPS existant in the config directory 
+check the `config/` directory for your device or generate a configuration using:
+```
+upsc $(upsc -l 2>/dev/null | tail -n 1) 2>/dev/null | awk -F ":" '{ $2 = "" ; print $0 }'
+```
 
-Call the script from `telegraf.conf` like this
+update the telegraf configuration (default: `/etc/telegraf/telegraf.conf`) with the new input:
 ```
 [[inputs.exec]]
-
-   commands = ["python /full/path/to/getUpsData.py --config eaton/eco --name MyUPS"]
+   commands = ["python /opt/ups-telegraf/getUpsData.py --config tripplite/smart1500lcd --name tripplite"]
    timeout = "5s"
    data_format = "influx"
 ```
 
-if your UPS does not appear in the configuration directory, you can simply create by saving the result in the correct folder :
-```
-upsc THE_UPS 2>/dev/null | awk -F ":" '{ $2 = "" ; print $0 }'
-```
-
-
-if you want you can search in the Grafana_dashboard folder if some dash already exist
-
 ## Compatibility
 Tested on:
-* Cyberpower CP1000AVRLCDa
-* CyberPower SL700U (`CyberPower/SL700U`)
-* Dell UPS 1000T/1920T/1920R HV (`Dell/5PX`)
-* MGE Pulsar 2200 (`Eaton/Pulsar`)
-* Eaton eco 1600 (`Eaton/Eco`)
+* CyberPower CP1000AVRLCDa
+* CyberPower SL700U (`cyberPower/sl700u`)
+* Dell UPS 1000T/1920T/1920R HV (`dell/5px`)
+* Eaton eco 1600 (`eaton/eco`)
+* MGE Pulsar 2200 (`eaton/pulsar`)
+* Tripp Lite SMART1500LCD (`tripplite/smart1500lcd`)
 
-
-If you're using this with a different UPS, please let me know so I can add it to the list
+Feel free to test and submit a PR!
 
 ## Contributors
 
